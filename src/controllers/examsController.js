@@ -1,27 +1,28 @@
 const db = require('../database/index')
+const {validatePostedExamSchema} = require('../schemas/newExamSchema');
+const {getSubjectIdByItsName} = require('../repositories/subjectsRepo');
+const {getProfessorIdByItsName, matchIdsSubjectAndProfessor} = require('../repositories/professorRepo');
+const {insertNewExam} = require('../repositories/examsRepo');
 
 async function postExam(req,res) {
     
-    // const object = {
-    //     "name": "2020.1",
-    //     "idSubject": 2,
-    //     "idProfessor": 1,
-    //     "categorie": "P1",
-    //     "link": "lalalala"
-    // }
-    const name = "2020.1"
+    const isDataValid = validatePostedExamSchema(req.body);
+    if(!isDataValid) return res.status(422).send({error: "Verique o formato dos dados enviados"});
 
-    // const result = await db.query('INSERT INTO exams (name,"idSubject","idProfessor",categorie,link) VALUES ($1,$2,$)') 
+    const idSubject = await getSubjectIdByItsName(req.body.subject);
+    if(!idSubject) return res.status(500).send({error: "Erro ao encontrar a disciplina escolhida"});
 
-    try {
-        const result = await db.query('INSERT INTO exams (name) VALUES ($1)', [name]);
-        console.log(result);
-        res.send(200)
-    } catch(e) {
-        console.log(e);
-        res.send(500);
-    }
+    const idProfessor = await getProfessorIdByItsName(req.body.professor);
+    if(!idProfessor) return res.status(500).send({error: "Erro ao encontrar o professor escolhido"});
+
+    const thisProfessorTeachesThisSubject = await matchIdsSubjectAndProfessor(idSubject, idProfessor );
+    if(!thisProfessorTeachesThisSubject) return res.status(500).send({error: "O professor escolhido não leciona a matéria escolhida"});
+
+    const newExam = await insertNewExam(req.body, idSubject, idProfessor );
+    if(!newExam) return res.status(500).send({error: "Erro ao adicionar a prova"});
+
+    
+    return res.status(201).send(newExam);
 }
-
 
 module.exports = {postExam}
