@@ -21,7 +21,6 @@ async function postExam(req,res) {
     const newExam = await insertNewExam(req.body, idSubject, idProfessor );
     if(!newExam) return res.status(500).send({error: "Erro ao adicionar a prova"});
 
-    
     return res.status(201).send(newExam);
 }
 
