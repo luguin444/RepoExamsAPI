@@ -2,19 +2,9 @@ const supertest = require('supertest');
 const app = require('../app');
 const db = require('../database/index');
 
-// async function cleanDataBase() {
-//     // await db.query(`DELETE FROM exams`);
-// }
-
-// beforeAll(async () => {
-//     await cleanDataBase();
-// });
-
-afterAll( async () => {
-    // await cleanDataBase();
+afterAll( () => {
     db.end();
 })
-
 
 describe('Test Route GET', () => {
 

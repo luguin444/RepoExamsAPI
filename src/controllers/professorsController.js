@@ -1,8 +1,10 @@
 const db = require('../database/index')
 
-// const {getSubjectIdByItsName} = require('../repositories/subjectsRepo');
-const {getListAllProfessors, insertQuantitiesOfExamsInObject, getProfessorById, insertExamsFromProfessor} = require('../repositories/professorRepo');
-// const {insertNewExam} = require('../repositories/examsRepo');
+const {getListAllProfessors, 
+    insertQuantitiesOfExamsInObject,
+    getProfessorById,
+    insertExamsFromProfessor,
+    getProfessorsBySubjectIdFromDatabase} = require('../repositories/professorRepo');
 
 async function getList(req,res) {
     
@@ -11,6 +13,16 @@ async function getList(req,res) {
     const professorAndNumberExams = await insertQuantitiesOfExamsInObject(professors);
 
     return res.status(200).send(professorAndNumberExams);
+}
+
+async function getProfessorsBySubjectId(req,res) {
+    
+    const { idSubject } = req.params;
+
+    const professors = await getProfessorsBySubjectIdFromDatabase(parseInt(idSubject));
+    const professorsNames = professors.map( p => p.name);
+
+    return res.status(200).send(professorsNames);
 }
 
 async function getProfessorData(req,res) {
@@ -26,4 +38,4 @@ async function getProfessorData(req,res) {
     res.status(200).send(professorAndExams);
 }
 
-module.exports = {getList, getProfessorData}
+module.exports = {getList, getProfessorData, getProfessorsBySubjectId}

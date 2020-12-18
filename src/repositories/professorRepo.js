@@ -40,6 +40,20 @@ async function getListAllProfessors() {
     }
 }
 
+async function getProfessorsBySubjectIdFromDatabase(id) {
+
+    try {
+        const result = await db.query(`SELECT p.name FROM professors AS p
+        JOIN professors_subjects AS ps ON ps."idProfessor" = p.id
+        JOIN subjects AS s ON ps."idSubject" = s.id
+        WHERE s.id = $1`, [id]);
+        return result.rows;
+    } catch (e) {
+        return null;
+    }
+}
+
+
 async function insertQuantitiesOfExamsInObject(professors) {
 
     try {
@@ -77,4 +91,5 @@ module.exports = {
     insertQuantitiesOfExamsInObject,
     getProfessorById,
     insertExamsFromProfessor,
+    getProfessorsBySubjectIdFromDatabase
 };
