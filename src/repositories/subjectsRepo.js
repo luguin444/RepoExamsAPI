@@ -6,6 +6,7 @@ async function getSubjectIdByItsName(name) {
         const result = await db.query('SELECT id FROM subjects WHERE name = $1', [name]);
         return result.rows[0].id;
     } catch (e) {
+        console.log(e);
         return null;
     }
 }
