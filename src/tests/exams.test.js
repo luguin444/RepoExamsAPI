@@ -3,7 +3,7 @@ const app = require('../app');
 const db = require('../database/index');
 
 async function cleanDataBase() {
-    await db.query(`DELETE FROM exams`);
+   // await db.query(`DELETE FROM exams`);
 }
 
 beforeAll(async () => {

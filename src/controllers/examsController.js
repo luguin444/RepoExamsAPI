@@ -10,6 +10,7 @@ async function postExam(req,res) {
     if(!isDataValid) return res.status(422).send({error: "Verique o formato dos dados enviados"});
 
     const idSubject = await getSubjectIdByItsName(req.body.subject);
+    return res.send(idSubject);
     if(!idSubject) return res.status(500).send({error: "Erro ao encontrar a disciplina escolhida"});
 
     const idProfessor = await getProfessorIdByItsName(req.body.professor);
