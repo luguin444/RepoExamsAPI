@@ -30,7 +30,7 @@ async function matchIdsSubjectAndProfessor(idSubject, idProfessor) {
     }
 }
 
-async function getListAllProfessors(idSubject, idProfessor) {
+async function getListAllProfessors() {
 
     try {
         const result = await db.query('SELECT * FROM professors');
