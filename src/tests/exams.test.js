@@ -3,7 +3,7 @@ const app = require('../app');
 const db = require('../database/index');
 
 async function cleanDataBase() {
-    await db.query(`DELETE FROM exams`);
+    //await db.query(`DELETE FROM exams`);
 }
 
 beforeAll(async () => {
@@ -60,14 +60,3 @@ describe('Test Route Post New Exam', () => {
         expect(res.status).toBe(500);
     })
 })
-
-// describe('Test Route GET', () => {
-
-//     it('should return 200', async () => {
-
-//         const res = await supertest(app).get('/api/users/activities').set('Authorization', `Bearer ${token}`)
-
-//         expect.arrayContaining(res.body);
-//         expect(res.status).toBe(200);
-//     })
-// })

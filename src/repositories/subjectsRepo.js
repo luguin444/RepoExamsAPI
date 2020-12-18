@@ -10,6 +10,16 @@ async function getSubjectIdByItsName(name) {
     }
 }
 
+async function getSubjectById(id) {
+
+    try {
+        const result = await db.query('SELECT * FROM subjects WHERE id = $1', [id]);
+        return result.rows[0];
+    } catch (e) {
+        return null;
+    }
+}
+
 async function getListAllSubjects(idSubject, idProfessor) {
 
     try {
@@ -33,8 +43,26 @@ async function insertQuantitiesOfExamsInObject(subjects) {
     }
 }
 
+async function insertExamsFromSubject(subject) {
+
+    try {      
+        const result = await db.query(`
+            SELECT p.name AS professor, e.name, e.categorie, e.link FROM exams AS e
+            JOIN professors AS p ON e."idProfessor" = p.id
+            JOIN subjects AS s ON e."idSubject" = s.id
+            WHERE s.id = $1`, [subject.id]);
+
+        const objectSubject = {...subject, exams: [...result.rows] };
+        return objectSubject;
+    } catch (e) {
+        return null;
+    }
+}
+
 module.exports = {
     getSubjectIdByItsName,
-     getListAllSubjects,
-     insertQuantitiesOfExamsInObject,
-    };
+    getListAllSubjects,
+    insertQuantitiesOfExamsInObject,
+    getSubjectById,
+    insertExamsFromSubject,
+};
