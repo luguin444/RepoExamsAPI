@@ -8,7 +8,7 @@ async function insertNewExam(data, idSubject, idProfessor) {
             VALUES ($1,$2,$3,$4,$5) RETURNING *`, [data.name, idSubject, idProfessor, data.categorie, data.link]);    
             return result.rows[0];
     } catch (e) {
-        return e;
+        return null;
     }
 }
 
