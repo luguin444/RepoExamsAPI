@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./src/server.js",
+    "start": "node ./src/app.js",
     "test": "npx jest -i",
     "dev": "npx nodemon src/server.js",
     "deploy": "git push heroku main"
